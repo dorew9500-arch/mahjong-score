@@ -9,6 +9,20 @@ const FEATURES = [
     color: "#d4a843",
   },
   {
+    href: "/table",
+    icon: "📋",
+    title: "点数早見表",
+    desc: "翻・符から点数をすぐに確認",
+    color: "#d4a843",
+  },
+  {
+    href: "/scoreboard",
+    icon: "📊",
+    title: "スコア表",
+    desc: "4人の対局スコアを記録・集計",
+    color: "#4ad47a",
+  },
+  {
     href: "/quiz/wait",
     icon: "❓",
     title: "待ちクイズ",
@@ -24,10 +38,10 @@ const FEATURES = [
   },
   {
     href: "/efficiency",
-    icon: "📊",
+    icon: "🔍",
     title: "牌効率",
     desc: "有効牌数を確認して最善の切り牌を探そう",
-    color: "#4ad47a",
+    color: "#d44a7a",
   },
 ];
 
@@ -36,12 +50,11 @@ export default function LandingPage() {
     <div style={{
       maxWidth: 480, margin: "0 auto",
       minHeight: "100vh",
-      display: "flex", flexDirection: "column",
-      padding: "0 16px",
+      padding: "0 16px 24px",
     }}>
-      {/* ヒーローヘッダー */}
-      <div style={{ textAlign: "center", padding: "48px 0 36px" }}>
-        <div style={{ fontSize: "3.5rem", marginBottom: 12, lineHeight: 1 }}>🀄</div>
+      {/* ヘッダー */}
+      <div style={{ textAlign: "center", padding: "40px 0 28px" }}>
+        <div style={{ fontSize: "3rem", marginBottom: 10, lineHeight: 1 }}>🀄</div>
         <h1 style={{
           fontSize: "1.75rem", fontWeight: "bold",
           color: "var(--accent)", margin: "0 0 8px",
@@ -55,23 +68,15 @@ export default function LandingPage() {
       </div>
 
       {/* 機能カードグリッド */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: 12,
-      }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
         {FEATURES.map((f) => (
-          <Link
-            key={f.href}
-            href={f.href}
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <div className="card feature-card">
-              <div style={{ fontSize: "2rem", lineHeight: 1 }}>{f.icon}</div>
-              <div style={{ fontWeight: "bold", fontSize: "1rem", color: f.color }}>
+          <Link key={f.href} href={f.href} style={{ textDecoration: "none", color: "inherit" }}>
+            <div className="card feature-card" style={{ height: "100%" }}>
+              <div style={{ fontSize: "1.75rem", lineHeight: 1 }}>{f.icon}</div>
+              <div style={{ fontWeight: "bold", fontSize: "0.95rem", color: f.color }}>
                 {f.title}
               </div>
-              <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
+              <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
                 {f.desc}
               </div>
             </div>

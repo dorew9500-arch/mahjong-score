@@ -5,13 +5,13 @@ import { usePathname } from "next/navigation";
 const NAV_ITEMS = [
   { href: "/",            label: "ホーム",   icon: "⌂" },
   { href: "/calculator",  label: "点数計算", icon: "算" },
+  { href: "/table",       label: "早見表",   icon: "表" },
+  { href: "/scoreboard",  label: "スコア表", icon: "記" },
   { href: "/quiz",        label: "クイズ",   icon: "？" },
-  { href: "/efficiency",  label: "牌効率",   icon: "効" },
 ];
 
 export function BottomNav() {
   const pathname = usePathname();
-  // ランディングページでは表示しない
   if (pathname === "/") return null;
 
   return (
@@ -38,16 +38,16 @@ export function BottomNav() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              padding: "10px 4px 8px",
+              padding: "10px 2px 8px",
               textDecoration: "none",
               color: active ? "var(--accent)" : "var(--text-muted)",
-              fontSize: "0.65rem",
+              fontSize: "0.6rem",
               gap: 3,
               borderTop: active ? "2px solid var(--accent)" : "2px solid transparent",
               fontWeight: active ? "bold" : "normal",
             }}
           >
-            <span style={{ fontSize: "1.1rem", lineHeight: 1 }}>{item.icon}</span>
+            <span style={{ fontSize: "1rem", lineHeight: 1 }}>{item.icon}</span>
             <span>{item.label}</span>
           </Link>
         );
