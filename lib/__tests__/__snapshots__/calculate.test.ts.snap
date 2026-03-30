@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`debug kokushi hand has 14 tiles and is detected 1`] = `
+[
+  "man1",
+  "man9",
+  "pin1",
+  "pin9",
+  "sou1",
+  "sou9",
+  "honoreast",
+  "souNaN",
+  "honorwest",
+  "honornorth",
+  "honorhaku",
+  "honorhatsu",
+  "honorchun",
+  "man1",
+]
+`;
