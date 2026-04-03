@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "https://mahjong-score-git-main-dorew9500-archs-projects.vercel.app";
+  const base = "https://mahjong-score-iota.vercel.app";
   return [
     { url: base, priority: 1.0 },
     { url: `${base}/calculator`, priority: 0.9 },
