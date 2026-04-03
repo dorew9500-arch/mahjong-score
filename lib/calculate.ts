@@ -16,6 +16,8 @@ export interface OpenMentsu {
   /** 副露の3枚または4枚（槓） */
   tiles: Tile[];
   nakiType: NakiType;
+  /** 横向きにする牌のインデックス（0=左端, 1=中, 2=右端）。暗槓はundefined */
+  stolenIndex?: number;
 }
 
 export interface CalcOptions {
@@ -459,7 +461,7 @@ function detectYaku(
       const nums = tiles.map((t) => t.number ?? 0).sort((a, b) => a - b);
       if (
         nums[0] === 1 && nums[1] === 1 && nums[2] === 1 &&
-        nums[10] === 9 && nums[11] === 9 && nums[12] === 9 &&
+        nums[11] === 9 && nums[12] === 9 && nums[13] === 9 &&
         [1, 2, 3, 4, 5, 6, 7, 8, 9].every((n) => nums.includes(n))
       ) {
         yaku.push({ name: "九蓮宝燈", han: 0 });

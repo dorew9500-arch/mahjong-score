@@ -1,69 +1,60 @@
 "use client";
-import { Tile, TILE_LABEL } from "@/lib/tiles";
+import { Tile } from "@/lib/tiles";
+import Image from "next/image";
 
 interface Props {
   tile: Tile;
   onClick: (tile: Tile) => void;
   disabled?: boolean;
+  blackout?: boolean;
   size?: "sm" | "md";
+  displayOnly?: boolean; // 表示専用：フル透明度、非インタラクティブ
 }
 
-// 個別タイルの文字色オーバーライド
-const TILE_COLOR: Record<string, string> = {
-  hatsu: "#116611", // 發：緑
-  chun:  "#cc2222", // 中：赤
+// tile.id → 画像ファイル名マッピング
+const TILE_IMAGE: Record<string, string> = {
+  man1: "Man1", man2: "Man2", man3: "Man3", man4: "Man4", man5: "Man5",
+  man6: "Man6", man7: "Man7", man8: "Man8", man9: "Man9", man5r: "Man5-Dora",
+  pin1: "Pin1", pin2: "Pin2", pin3: "Pin3", pin4: "Pin4", pin5: "Pin5",
+  pin6: "Pin6", pin7: "Pin7", pin8: "Pin8", pin9: "Pin9", pin5r: "Pin5-Dora",
+  sou1: "Sou1", sou2: "Sou2", sou3: "Sou3", sou4: "Sou4", sou5: "Sou5",
+  sou6: "Sou6", sou7: "Sou7", sou8: "Sou8", sou9: "Sou9", sou5r: "Sou5-Dora",
+  east: "Ton", south: "Nan", west: "Shaa", north: "Pei",
+  haku: "Haku", hatsu: "Hatsu", chun: "Chun",
 };
 
-export function TileButton({ tile, onClick, disabled, size = "md" }: Props) {
-  const typeClass =
-    tile.type === "man" ? "tile-man" :
-    tile.type === "pin" ? "tile-pin" :
-    tile.type === "sou" ? "tile-sou" : "tile-honor";
+export function TileButton({ tile, onClick, disabled, blackout, size = "md", displayOnly }: Props) {
+  const imgSize = size === "sm" ? 24 : 28;
 
-  const sizeStyle = size === "sm"
-    ? { minWidth: 38, minHeight: 40, fontSize: "0.8rem" }
-    : {};
+  const imgFile = TILE_IMAGE[tile.id];
+  const src = blackout ? "/tiles/Back.png" : imgFile ? `/tiles/${imgFile}.png` : null;
 
-  const baseId = tile.isAka ? tile.id.slice(0, -1) : tile.id;
-  const label = TILE_LABEL[baseId] ?? tile.id;
-
-  // 数牌は「数字（黒）＋漢字（色）」に分割して表示
-  // 赤ドラは数字も含めて全体を赤に
-  const suitColor =
-    tile.type === "man" ? "#cc2222" :
-    tile.type === "pin" ? "#1144cc" :
-    tile.type === "sou" ? "#116611" :
-    (TILE_COLOR[tile.id] ?? "#1a1a1a");
-
-  // 索子の数字色（紅孔雀対応）
-  const souNumColor =
-    tile.type === "sou" && [1, 5, 7, 9].includes(tile.number!) ? "#cc2222" :
-    tile.type === "sou" && [2, 3, 4, 6, 8].includes(tile.number!) ? "#116611" :
-    "#1a1a1a";
-
-  const numColor = tile.type === "sou" ? souNumColor : "#1a1a1a";
-
-  const content = tile.isAka ? (
-    <span style={{ color: "#ee1111" }}>{label}</span>
-  ) : tile.type !== "honor" ? (
-    // 数牌：「数字」+ 「萬/筒/索」色
-    <>
-      <span style={{ color: numColor }}>{label.slice(0, -1)}</span>
-      <span style={{ color: suitColor }}>{label.slice(-1)}</span>
-    </>
-  ) : (
-    // 字牌：全体に suitColor
-    <span style={{ color: suitColor }}>{label}</span>
-  );
+  if (!src) return null;
 
   return (
     <button
-      className={`tile-btn ${typeClass}`}
-      style={{ ...sizeStyle, opacity: disabled ? 0.4 : 1 }}
-      onClick={() => !disabled && onClick(tile)}
-      disabled={disabled}
+      style={{
+        background: "#fff",
+        border: "1px solid rgba(0,0,0,0.25)",
+        padding: 1,
+        cursor: disabled || blackout || displayOnly ? "default" : "pointer",
+        opacity: blackout ? 0.6 : disabled && !displayOnly ? 0.35 : 1,
+        pointerEvents: blackout || displayOnly ? "none" : "auto",
+        borderRadius: 4,
+        display: "inline-flex",
+        boxShadow: "0 2px 4px rgba(0,0,0,0.5)",
+      }}
+      onClick={() => !disabled && !blackout && !displayOnly && onClick(tile)}
+      disabled={disabled && !displayOnly}
     >
-      {content}
+      <Image
+        src={src}
+        alt={tile.id}
+        width={imgSize}
+        height={imgSize}
+        style={{ display: "block", borderRadius: 2 }}
+        draggable={false}
+      />
     </button>
   );
 }

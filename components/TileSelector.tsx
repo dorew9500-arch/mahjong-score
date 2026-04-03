@@ -1,74 +1,67 @@
 "use client";
-import { useState } from "react";
-import { Tile, ALL_TILES, AKA_DORA_TILES, tileFromId } from "@/lib/tiles";
+import { Tile, ALL_TILES, tileFromId } from "@/lib/tiles";
 import { RuleSet } from "@/lib/rules";
 import { TileButton } from "./TileButton";
-
-type Tab = "man" | "pin" | "sou" | "honor";
 
 interface Props {
   rules: RuleSet;
   handCount: number;
   max?: number;
   onAdd: (tile: Tile) => void;
+  validAgariIds?: Set<string> | null;
 }
 
-export function TileSelector({ rules, handCount, max = 14, onAdd }: Props) {
-  const [tab, setTab] = useState<Tab>("man");
+const SUIT_ORDER: { type: string; label: string; akaId?: string }[] = [
+  { type: "man",   label: "萬子", akaId: "man5r" },
+  { type: "pin",   label: "筒子", akaId: "pin5r" },
+  { type: "sou",   label: "索子", akaId: "sou5r" },
+  { type: "honor", label: "字牌" },
+];
+
+export function TileSelector({ rules, handCount, max = 14, onAdd, validAgariIds }: Props) {
   const disabled = handCount >= max;
+  const isAgariPhase = validAgariIds != null;
 
-  const tabs: { key: Tab; label: string }[] = [
-    { key: "man", label: "萬子" },
-    { key: "pin", label: "筒子" },
-    { key: "sou", label: "索子" },
-    { key: "honor", label: "字牌" },
-  ];
+  function isAgariBlocked(tile: Tile): boolean {
+    if (!isAgariPhase) return false;
+    const baseId = tile.isAka ? tile.id.slice(0, -1) : tile.id;
+    return !validAgariIds!.has(baseId);
+  }
 
-  const tiles = ALL_TILES.filter((t) => t.type === tab);
+  function tileDisabled(tile: Tile): boolean {
+    if (disabled) return true;
+    if (isAgariBlocked(tile)) return true;
+    return false;
+  }
 
-  // 赤ドラボタン（ルールON時、5萬・5筒・5索）
-  const akaMap: Record<Tab, string | null> = {
-    man: "man5r",
-    pin: "pin5r",
-    sou: "sou5r",
-    honor: null,
-  };
-  const akaId = akaMap[tab];
+  function tileBlackout(tile: Tile): boolean {
+    return isAgariBlocked(tile);
+  }
 
   return (
     <div className="card">
-      {/* タブ */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-        {tabs.map((t) => (
-          <button
-            key={t.key}
-            className={`btn-ghost${tab === t.key ? " active" : ""}`}
-            onClick={() => setTab(t.key)}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
-
-      {/* 牌ボタン */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-        {tiles.map((tile) => (
-          <TileButton
-            key={tile.id}
-            tile={tile}
-            onClick={onAdd}
-            disabled={disabled}
-          />
-        ))}
-        {/* 赤ドラ */}
-        {rules.akaDoraEnabled && akaId && (
-          <TileButton
-            key={akaId}
-            tile={tileFromId(akaId)}
-            onClick={onAdd}
-            disabled={disabled}
-          />
-        )}
+      {isAgariPhase && (
+        <div style={{ fontSize: "0.75rem", color: "var(--accent)", marginBottom: 8, fontWeight: "bold" }}>
+          上がり牌を選んでください
+        </div>
+      )}
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {SUIT_ORDER.map(({ type, label, akaId }) => {
+          const tiles = ALL_TILES.filter((t) => t.type === type);
+          return (
+            <div key={type}>
+              <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", marginBottom: 5 }}>{label}</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
+                {tiles.map((tile) => (
+                  <TileButton key={tile.id} tile={tile} onClick={onAdd} disabled={tileDisabled(tile)} blackout={tileBlackout(tile)} />
+                ))}
+                {rules.akaDoraEnabled && akaId && (
+                  <TileButton key={akaId} tile={tileFromId(akaId)} onClick={onAdd} disabled={tileDisabled(tileFromId(akaId))} blackout={tileBlackout(tileFromId(akaId))} />
+                )}
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       <div style={{ marginTop: 8, fontSize: "0.75rem", color: "var(--text-muted)" }}>

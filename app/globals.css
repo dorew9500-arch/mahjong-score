@@ -23,11 +23,12 @@ body {
 }
 
 .tile-btn {
-  min-width: 44px;
+  min-width: 28px;
   min-height: 44px;
+  width: 28px;
   border-radius: 5px;
   font-weight: bold;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: #1a1a1a;
   border: 2px solid rgba(0,0,0,0.2);
   background: #ffffff;
@@ -35,13 +36,24 @@ body {
   transition: transform 0.08s, box-shadow 0.08s;
   cursor: pointer;
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  line-height: 1.2;
+  padding: 3px 2px;
 }
 .tile-btn:hover { background: #f5f5f5; }
 .tile-btn:active {
   transform: translateY(2px);
   box-shadow: 0 1px 0 rgba(0,0,0,0.3);
+}
+.tile-blackout {
+  background: #111 !important;
+  box-shadow: none !important;
+  border-color: #222 !important;
+  color: transparent !important;
+  pointer-events: none;
+  cursor: default;
 }
 
 .tile-man   {}
