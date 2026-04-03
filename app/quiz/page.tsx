@@ -4,7 +4,7 @@ const QUIZZES = [
   {
     href: "/quiz/wait",
     icon: "❓",
-    title: "待ちクイズ",
+    title: "待ちクイズ（初心者用）",
     desc: "テンパイ手牌を見て、上がれる牌をすべて選ぼう",
     badge: "準備中",
   },
