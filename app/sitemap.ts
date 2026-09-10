@@ -1,12 +1,15 @@
 import { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/site";
+
+// ★静的書き出し(output: "export")では、これが要る。robots.ts と同じ理由。
+export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "https://mahjong-score-iota.vercel.app";
   return [
-    { url: base, priority: 1.0 },
-    { url: `${base}/calculator`, priority: 0.9 },
-    { url: `${base}/table`, priority: 0.8 },
-    { url: `${base}/quiz/wait`, priority: 0.7 },
-    { url: `${base}/scoreboard`, priority: 0.6 },
+    { url: SITE_URL, priority: 1.0 },
+    { url: `${SITE_URL}/calculator`, priority: 0.9 },
+    { url: `${SITE_URL}/table`, priority: 0.8 },
+    { url: `${SITE_URL}/quiz/wait`, priority: 0.7 },
+    { url: `${SITE_URL}/scoreboard`, priority: 0.6 },
   ];
 }
