@@ -1,12 +1,21 @@
 import Link from "next/link";
 
+// 並びは、使うものが先。スコア表はこのツールで一番他と違うところなので上段に置く。
+// 牌効率は中身が無いのでここから外した（ページ自体は残してある。作ったら戻す）。
 const FEATURES = [
   {
     href: "/calculator",
     icon: "🀄",
     title: "点数計算",
-    desc: "手牌を入力して役・符・点数を自動計算",
+    desc: "手牌を入力して役・符・点数を自動計算。ローカル役も設定できます",
     color: "#d4a843",
+  },
+  {
+    href: "/scoreboard",
+    icon: "📊",
+    title: "スコア表",
+    desc: "半荘ごとの点数から、ウマ・オカ込みの累計を自動で出します",
+    color: "#4ad47a",
   },
   {
     href: "/table",
@@ -14,13 +23,6 @@ const FEATURES = [
     title: "点数早見表",
     desc: "翻・符から点数をすぐに確認",
     color: "#d4a843",
-  },
-  {
-    href: "/scoreboard",
-    icon: "📊",
-    title: "スコア表",
-    desc: "4人の対局スコアを記録・集計",
-    color: "#4ad47a",
   },
   {
     href: "/quiz/wait",
@@ -35,13 +37,6 @@ const FEATURES = [
     title: "点数クイズ",
     desc: "手牌と状況から点数を当てよう",
     color: "#7a4ad4",
-  },
-  {
-    href: "/efficiency",
-    icon: "🔍",
-    title: "牌効率",
-    desc: "有効牌数を確認して最善の切り牌を探そう",
-    color: "#d44a7a",
   },
 ];
 
@@ -62,8 +57,12 @@ export default function LandingPage() {
         }}>
           麻雀ツール
         </h1>
-        <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", margin: 0 }}>
-          点数計算・クイズ・牌効率分析
+        <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", margin: "0 0 6px" }}>
+          点数計算・成績記録・クイズ
+        </p>
+        {/* 他と違うのはここなので、最初に見える場所に置く */}
+        <p style={{ color: "var(--text-muted)", fontSize: "0.75rem", margin: 0, lineHeight: 1.5 }}>
+          返し点もウマもローカル役も、自分の卓のルールに合わせられます
         </p>
       </div>
 
